@@ -12,7 +12,7 @@ function generateRandomPin() {
 }
 
 // Voucher generation logic with Firebase Authentication
-app.post('/api/generateVoucher', async (req, res) => {
+app.get('/api/generateVoucher', async (req, res) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
