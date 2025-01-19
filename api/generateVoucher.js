@@ -3,8 +3,12 @@ const admin = require('firebase-admin');
 const app = express();
 app.use(express.json()); // To parse JSON requests
 
-// Initialize Firebase Admin SDK
-admin.initializeApp();
+// Initialize Firebase Admin SDK with service account credentials
+const serviceAccount = require('/voucher-api/google-services.json'); // Path to your downloaded service account JSON file
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 // Function to generate a random PIN
 function generateRandomPin() {
@@ -15,11 +19,11 @@ function generateRandomPin() {
 app.get('/api/generateVoucher', async (req, res) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader || !authHeader.startsWith('Bearer')) {
     return res.status(403).json({ error: 'Unauthorized, Missing or Invalid Authorization Header' });
   }
 
-  const idToken = authHeader.split('Bearer ')[1];
+  const idToken = authHeader.split('Bearer')[1].trim(); // Make sure to trim spaces
 
   try {
     // Verify the ID token
@@ -55,6 +59,7 @@ app.get('/api/generateVoucher', async (req, res) => {
 
     res.status(201).json(voucher); // Return the generated voucher
   } catch (error) {
+    console.error('Error verifying token:', error);
     return res.status(403).json({ error: 'Unauthorized or invalid token.' });
   }
 });

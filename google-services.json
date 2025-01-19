@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "62151299107",
+    "project_id": "depozitha-merchants",
+    "storage_bucket": "depozitha-merchants.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62151299107:android:4220eaec364e92b7686196",
+        "android_client_info": {
+          "package_name": "com.company.DepoMerchants"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv7kqJUM8u0F1W_lVO1MkCEET53p4DqZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62151299107:android:6b2e6443638cd539686196",
+        "android_client_info": {
+          "package_name": "com.example.Merchants.Depozitha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv7kqJUM8u0F1W_lVO1MkCEET53p4DqZs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
