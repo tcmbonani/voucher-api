@@ -16,7 +16,7 @@ function generateRandomPin() {
 }
 
 // Voucher generation logic with Firebase Authentication
-app.get('https://voucher-55y8xgzb5-tshepisos-projects.vercel.app/api/generateVoucher', async (req, res) => {
+app.post('https://firestore.googleapis.com/v1/projects/depozitha-merchants/databases/(default)/documents/users?key=AIzaSyDyeIv7uaQumQ_gModXmK70ZFYI2TCP5Q8', async (req, res) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer')) {
