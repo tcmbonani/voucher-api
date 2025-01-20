@@ -16,7 +16,7 @@ function generateRandomPin() {
 }
 
 // Voucher generation logic with Firebase Authentication
-app.get('/api/generateVoucher', async (req, res) => {
+app.get('https://voucher-55y8xgzb5-tshepisos-projects.vercel.app/api/generateVoucher', async (req, res) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer')) {
