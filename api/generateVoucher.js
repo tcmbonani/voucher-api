@@ -16,7 +16,7 @@ function generateRandomPin() {
 }
 
 // Voucher generation route
-app.post("https://firestore.googleapis.com/v1/projects/depozitha-merchants/databases/(default)/documents/users", async (req, res) => {
+app.post("https://firestore.googleapis.com/v1/projects/depozitha-merchants/databases/(default)/documents/vouchers", async (req, res) => {
   const authHeader = req.headers.authorization;
 
   // Check if Authorization header is present and valid
