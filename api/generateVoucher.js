@@ -3,12 +3,14 @@ const admin = require("firebase-admin");
 const app = express();
 app.use(express.json()); // To parse JSON requests
 
-// Initialize Firebase Admin SDK with service account credentials
-const serviceAccount = require("/voucher-api/google-services.json"); // Path to your downloaded service account JSON file
+const path = require("path");
+const serviceAccount = require(path.resolve(__dirname, "google-services.json"));
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+
+
 
 // Function to generate a random PIN
 function generateRandomPin() {
