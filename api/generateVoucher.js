@@ -1,16 +1,15 @@
 const express = require("express");
 const admin = require("firebase-admin");
 const app = express();
-app.use(express.json()); // To parse JSON requests
+app.use(express.json());
+require("dotenv").config();
 
-const path = require("path");
-const serviceAccount = require(path.resolve(__dirname, "google-services.json"));
+// Initialize Firebase Admin
+const firebaseAdminCredentials = JSON.parse(process.env.FIREBASE_ADMIN_CREDENTIALS);
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert(firebaseAdminCredentials),
 });
-
-
 
 // Function to generate a random PIN
 function generateRandomPin() {
@@ -18,7 +17,7 @@ function generateRandomPin() {
 }
 
 // Voucher generation route
-app.post("https://firestore.googleapis.com/v1/projects/depozitha-merchants/databases/(default)/documents/vouchers", async (req, res) => {
+app.post("/vouchers", async (req, res) => {
   const authHeader = req.headers.authorization;
 
   // Check if Authorization header is present and valid
@@ -26,15 +25,13 @@ app.post("https://firestore.googleapis.com/v1/projects/depozitha-merchants/datab
     return res.status(403).json({ error: "Unauthorized: Missing or Invalid Authorization Header" });
   }
 
-  // Extract the ID Token from the header
   const idToken = authHeader.split("Bearer ")[1].trim();
 
   try {
     // Verify the ID token using Firebase Admin SDK
     const decodedToken = await admin.auth().verifyIdToken(idToken);
-    const uid = decodedToken.uid; // Firebase user UID
+    const uid = decodedToken.uid;
 
-    // Extract required fields from the request body
     const { amount, cashierName, cashierId, storeName } = req.body;
 
     // Validate the request body
@@ -42,12 +39,11 @@ app.post("https://firestore.googleapis.com/v1/projects/depozitha-merchants/datab
       return res.status(400).json({ error: "Missing required fields." });
     }
 
-    // Business logic to calculate the voucher details
     const transactionFee = 20.0;
     const finalAmount = amount - transactionFee;
     const currentTime = new Date();
-    const date = currentTime.toISOString().split("T")[0]; // YYYY-MM-DD
-    const time = currentTime.toISOString().split("T")[1].split(".")[0]; // HH:mm:ss
+    const date = currentTime.toISOString().split("T")[0];
+    const time = currentTime.toISOString().split("T")[1].split(".")[0];
 
     const voucher = {
       pin: generateRandomPin(),
@@ -67,7 +63,6 @@ app.post("https://firestore.googleapis.com/v1/projects/depozitha-merchants/datab
     const firestore = admin.firestore();
     const voucherRef = await firestore.collection("vouchers").add(voucher);
 
-    // Respond with the voucher details and Firestore document ID
     res.status(201).json({
       message: "Voucher created successfully.",
       voucherId: voucherRef.id,
